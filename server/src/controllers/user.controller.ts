@@ -1,7 +1,17 @@
 import { Request, Response } from "express";
 import * as userService from "../services/userService";
+import User from "../models/user/User";
 
 class UserController {
+  public async getUser(req: Request, res: Response): Promise<Response> {
+    let allUsers: any[]
+    try{
+      allUsers = await userService.getUser()
+      return res.json(allUsers).status(200)
+    } catch (error) {
+        return res.json({ error: 'Internal server error'}).status(500)
+    }
+  }  
   public async createUser(req: Request, res: Response): Promise<Response> {
     try {
       const userData = req.body;

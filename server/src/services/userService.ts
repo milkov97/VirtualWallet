@@ -3,6 +3,17 @@ import { UserInterface } from "../interfaces/user/UserInterface";
 import { connectToDatabase } from "../database/dbConnection";
 
 
+export const getUser = async () => {
+  try {
+    const db = await connectToDatabase();
+
+    const result = db!.collection("users").find().toArray();
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 export const createUser = async (
   userData: UserInterface

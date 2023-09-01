@@ -1,0 +1,17 @@
+GET http://localhost:3200/me
+Content-Type: application/json
+
+
+POST http://localhost:3200/signup
+Content-Type: application/json
+
+{
+      "username": "admin",
+      "email": "admin@user.com",
+      "password": "useradmin",
+      "firstName": "Admin",
+      "lastName": "User",
+      "country": "BG",
+      "address": "Sofia",
+      "phoneNumber": "+3591948"
+}
