@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import * as userService from '../services/userService'
+import * as userService from "../services/userService";
 
-
-
-export const createUser = async (req: Request, res: Response) => {
+class UserController {
+  public async createUser(req: Request, res: Response): Promise<Response> {
     try {
-        const userData = req.body;
-        const newUser = await userService.createUser(userData);
-        res.status(201).json(newUser)
+      const userData = req.body;
+      const newUser = await userService.createUser(userData);
+      return res.json(newUser).status(201);
     } catch (error) {
-        console.error('Error in createUser controller:', error);
-        res.status(500).json({message: 'Internal server error'});
+      return res.json({ error: "Internal server error" }).status(500);
     }
-};
+  }
+}
+
+export const userController = new UserController();
