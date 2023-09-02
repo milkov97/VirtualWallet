@@ -32,8 +32,6 @@ class UserService {
         userData.phoneNumber
       );
       const result = await db!.collection("users").insertOne(newUser);
-      console.log(newUser);
-      console.log(result);
       return { ...newUser, _id: result.insertedId };
     } catch (error) {
       throw error;

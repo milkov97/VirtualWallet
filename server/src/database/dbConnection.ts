@@ -1,5 +1,6 @@
 import { MongoClient, Db } from "mongodb";
 import { validateEnvDatabaseVariables } from "../utils/validation/envValidator";
+import { userValidationRules } from "./schemas/userValidationFields";
 
 export async function connectToDatabase(): Promise<Db | null> {
   try {
@@ -13,7 +14,7 @@ export async function connectToDatabase(): Promise<Db | null> {
     await client.connect();
 
     const db: Db = client.db(process.env.DB_NAME);
-
+    await db.createCollection("users", userValidationRules);
     console.log("Successfully connected to database");
 
     return db;
