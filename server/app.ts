@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import userRouter from "./src/routes/userRouter";
 
 const app: Express = express();
+
 app.use(bodyParser.json());
 const port = process.env.PORT;
 
@@ -18,4 +19,6 @@ connectToDatabase()
     console.error("Error connecting to MongoDB:", error);
   });
 
+
 app.use("/", userRouter);
+
