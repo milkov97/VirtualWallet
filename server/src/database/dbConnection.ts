@@ -1,5 +1,5 @@
 import { MongoClient, Db } from "mongodb";
-import { validateEnvDatabaseVariables } from "../utils/envValidator";
+import { validateEnvDatabaseVariables } from "../utils/validation/envValidator";
 
 export async function connectToDatabase(): Promise<Db | null> {
   try {

@@ -20,7 +20,7 @@ class UserService {
       const newUser = new User(
         userData.username,
         userData.email,
-        userData.password,
+        userData.password,  
         userData.firstName,
         userData.lastName,
         userData.country,
