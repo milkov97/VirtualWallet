@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import * as userService from "../services/userService";
-// import User from "../models/user/User";
+import { userService } from "../services/userService";
+
 
 class UserController {
   public async getUser(req: Request, res: Response): Promise<Response> {
