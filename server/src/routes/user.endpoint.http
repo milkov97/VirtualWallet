@@ -6,12 +6,12 @@ POST http://localhost:3200/signup
 Content-Type: application/json
 
 {
-      "username": "test1",
+      "username": "tes",
       "email": "test@user.com",
       "password": "usertest1",
       "firstName": "Test",
       "lastName": "User",
       "country": "BG",
       "address": "Sofia",
-      "phoneNumber": "+3591948"
+      "phoneNumber": "0892719063"
 }

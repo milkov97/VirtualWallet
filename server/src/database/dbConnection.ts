@@ -14,9 +14,8 @@ export async function connectToDatabase(): Promise<Db | null> {
     await client.connect();
 
     const db: Db = client.db(process.env.DB_NAME);
-    await db.createCollection("users", userValidationRules);
     console.log("Successfully connected to database");
-
+    db.command(userValidationRules)
     return db;
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);

@@ -1,4 +1,5 @@
 export const userValidationRules = {
+  collMod: "users",
   validator: {
     $jsonSchema: {
       bsonType: "object",
@@ -13,7 +14,6 @@ export const userValidationRules = {
         "address",
         "phoneNumber",
       ],
-      additionalPropertie: false,
       properties: {
         _id: {
           bsonType: "objectId",
@@ -38,13 +38,13 @@ export const userValidationRules = {
           bsonType: "string",
           description: "Must be a string",
           minLength: 2,
-          maxLenght: 50,
+          maxLength: 50,
         },
         lastName: {
           bsonType: "string",
           description: "Must be a string",
           minLength: 2,
-          maxLenght: 50,
+          maxLength: 50,
         },
         country: {
           bsonType: "string",
