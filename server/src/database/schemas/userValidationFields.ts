@@ -1,5 +1,4 @@
 export const userValidationRules = {
-  collMod: "users",
   validator: {
     $jsonSchema: {
       bsonType: "object",
@@ -62,6 +61,7 @@ export const userValidationRules = {
       },
     },
   },
+  validationAction: "error"
 };
 
 // password regex-^(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?=.*[a-zA-Z0-9]).{8,}$

@@ -15,6 +15,7 @@ export async function connectToDatabase(): Promise<Db | null> {
 
     const db: Db = client.db(process.env.DB_NAME);
     console.log("Successfully connected to database");
+
     db.command(userValidationRules)
     return db;
   } catch (error) {
