@@ -1,5 +1,4 @@
 import { UserInterface } from "../../interfaces/user/UserInterface";
-import { ObjectId } from "mongodb";
 
 export default class User implements UserInterface {
   constructor(
@@ -10,7 +9,6 @@ export default class User implements UserInterface {
     public lastName: string,
     public country: string,
     public address: string,
-    public phoneNumber: string,
-    public id?: ObjectId
+    public phoneNumber: string
   ) {}
 }

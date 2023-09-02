@@ -6,10 +6,10 @@ POST http://localhost:3200/signup
 Content-Type: application/json
 
 {
-      "username": "admin",
-      "email": "admin@user.com",
-      "password": "useradmin",
-      "firstName": "Admin",
+      "username": "test",
+      "email": "test@user.com",
+      "password": "usertest",
+      "firstName": "Test",
       "lastName": "User",
       "country": "BG",
       "address": "Sofia",

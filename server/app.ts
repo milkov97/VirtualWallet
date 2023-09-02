@@ -6,6 +6,7 @@ import userRouter from "./src/routes/userRouter";
 const app: Express = express();
 
 app.use(bodyParser.json());
+
 const port = process.env.PORT;
 
 connectToDatabase()
@@ -21,4 +22,3 @@ connectToDatabase()
 
 
 app.use("/", userRouter);
-
