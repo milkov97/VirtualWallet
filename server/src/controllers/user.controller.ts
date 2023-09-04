@@ -4,7 +4,7 @@ import { token } from "../utils/auth/jwtToken";
 
 
 class UserController {
-  public async getUser(req: Request, res: Response): Promise<Response> {
+  public async login(req: Request, res: Response): Promise<Response> {
     try {
       const userData = req.body
       const user = userService.authenticateUser(userData)
