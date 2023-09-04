@@ -4,10 +4,7 @@ import { token } from "../utils/auth/jwtToken";
 
 export const userRouter: Router = Router();
 
-
-userRouter.post("/signup", userController.createUser);
-
 userRouter.post("/login", token.createToken, userController.login);
-
+userRouter.post("/signup", userController.createUser);
 
 export default userRouter;
