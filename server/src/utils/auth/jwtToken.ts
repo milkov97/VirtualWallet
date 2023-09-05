@@ -2,6 +2,7 @@ import jwt, { Secret, Algorithm } from "jsonwebtoken";
 
 class Token {
   public createToken(payload: object) {
+    
     try {
       const privateKey: Secret = process.env["JWT_PRIVATE_KEY"]!;
       // @ts-ignore
@@ -23,11 +24,12 @@ class Token {
 
   public verifyToken(token: string) {
     try {
-      const publicKey: Secret = process.env["JWT_PUBLIC_KEY"]!;
+      const publicKey: Secret = process.env["JWT_PRIVATE_KEY"]!;
       if (!publicKey) {
         throw new Error("JWT configuration missing");
       }
       const decoded = jwt.verify(token, publicKey);
+      
       return { payload: decoded, expired: false };
     } catch (error) {
       if (error instanceof Error) {

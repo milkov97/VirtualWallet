@@ -5,26 +5,45 @@ import { hashPassword } from "../utils/security/hashPassword";
 import { UserLoginInterface } from "../interfaces/user/UserLoginInterface";
 import { comparePasswords } from "../utils/security/comparePassword";
 import { UserSession } from "../models/user/UserSession";
-import { UserSessionInterface } from '../interfaces/user/UserSessionInterface';
+import { UserSessionInterface } from "../interfaces/user/UserSessionInterface";
+// import { UserLogin } from "../models/user/UserLogin";
+
 
 class UserService {
+  public async getUser(username: string): Promise<UserInterface | null> {
+    try {
+      const db = await connectToDatabase();
+      const users = db!.collection<User>("users");
+      const user: UserInterface | null = await users.findOne({ username: username });
+      console.log(user);
+      
+      return user;
+    } catch (err) {
+      throw new Error(`User not found`);
+    }
+  }
+
   public async authenticateUser(
     userData: UserLoginInterface
   ): Promise<UserSessionInterface | null> {
     try {
-      const db = await connectToDatabase();
-      const username = userData.username;
-      // @ts-ignore
-      const user = db.collection("users").findOne({ username }).toArray();
-      const verifiedPassword = comparePasswords(
-        userData.password,
-        user.password
-      );
-      if (!verifiedPassword) {
-        return null;
+      const { username, password } = userData;
+
+      const foundUser = await this.getUser(username);
+
+      if(!foundUser) {
+        throw new Error('User not found');
       }
-      const userSession = new UserSession(user.id, user.username, user.email)
-      return userSession
+
+      const verifiedPassword = comparePasswords(password, foundUser.password);
+
+      if(!verifiedPassword) {
+        throw new Error('Incorrect username or password')
+      }
+
+      const userSession = new UserSession(username);
+      
+      return userSession;
     } catch (error) {
       throw error;
     }
