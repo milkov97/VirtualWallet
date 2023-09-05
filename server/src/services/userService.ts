@@ -17,8 +17,10 @@ class UserService {
         username: username,
       });
       return user;
-    } catch (err) {
-      throw new Error(`User not found`);
+    } catch (error) {
+      console.log(error);
+      
+      throw error;
     }
   }
 
