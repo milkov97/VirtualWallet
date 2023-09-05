@@ -4,9 +4,9 @@ class Token {
   public createToken(payload: object) {
     
     try {
-      const privateKey: Secret = process.env["JWT_PRIVATE_KEY"]!;
       // @ts-ignore
       const hashAlgorithm: Algorithm = process.env["JWT_ALGORITHM"];
+      const privateKey: Secret = process.env["JWT_PRIVATE_KEY"]!;
 
       if (!privateKey || !hashAlgorithm) {
         throw new Error("JWT configuration missing");

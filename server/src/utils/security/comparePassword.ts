@@ -5,9 +5,8 @@ export async function comparePasswords(
   hashedPassword: string
 ): Promise<boolean> {
   try {
-    const result = bcrypt.compare(plainPassword, hashedPassword);
-    return result;
-  } catch (err) {
-    throw new Error(`Error comparing password: ${err}`);
+    return bcrypt.compare(plainPassword, hashedPassword)
+  } catch (error) {
+    throw error;
   }
 }

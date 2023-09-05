@@ -7,16 +7,15 @@ class UserController {
     try {
       const userData = req.body;
       const user = await userService.authenticateUser(userData);
-      console.log(user);
-      
-      if (!user) {
-        return res.json({ message: "User not found" }).status(401);
+      console.log(user)
+      if(!user){
+        return res.json().status(500)
       }
-
+      // @ts-ignore
       const payload = { username: user.username };
       const accessToken = token.createToken(payload);
 
-      
+
       res.cookie("accessToken", accessToken, {
         maxAge: 300000,
         httpOnly: true,
@@ -31,10 +30,12 @@ class UserController {
   public async createUser(req: Request, res: Response): Promise<Response> {
     try {
       const userData = req.body;
+
       const newUser = await userService.createUser(userData);
+
       return res.json(newUser).status(201);
     } catch (error) {
-      return res.json({ error: "Internal server error" }).status(500);
+      return res.json({ error: `Internal server error: ${error}` }).status(500);
     }
   }
 }
