@@ -1,12 +1,10 @@
 import jwt, { Secret, Algorithm } from "jsonwebtoken";
 
 class Token {
-  public createToken(payload: object, privateKey?: Secret, expiresIn?: string) {
+  public signJWT(payload: object, privateKey: Secret, expiresIn: string) {
     try {
       // @ts-ignore
       const hashAlgorithm: Algorithm = process.env["JWT_ALGORITHM"];
-      privateKey = process.env["JWT_ACCESS_TOKEN"]!;
-      expiresIn = "10m"
 
       if (!privateKey || !hashAlgorithm) {
         throw new Error("JWT configuration missing");
@@ -17,21 +15,29 @@ class Token {
         expiresIn: expiresIn,
       });
       return token;
-    } catch (err) {
-      throw new Error(`Failed to create JWT: ${err}`);
+    } catch (error) {
+      throw new Error(`Failed to create JWT: ${error}`);
+    }
+  }
+  public createToken(payload: object) {
+    try {
+      const privateKey = process.env["JWT_ACCESS_TOKEN"]!;
+      return this.signJWT(payload, privateKey, "5m")
+    } catch (error) {
+      throw new Error(`Failed to create JWT: ${error}`);
     }
   }
 
   public createRefreshToken(payload: object) {
     try {
-      const privateKey: Secret = process.env["JWT_REFRESH_TOKEN"]!;
-      return this.createToken(payload, privateKey, '1h');
-    } catch (err) {
-      throw new Error(`Failed to create JWT: ${err}`);
+      const privateKey = process.env["JWT_REFRESH_TOKEN"]!;
+      return this.signJWT(payload, privateKey, "1h");
+    } catch (error) {
+      throw new Error(`Failed to create JWT: ${error}`);
     }
   }
 
-  public verifyToken(token: string) {
+  public verifyJWT(token: string) {
     try {
       const publicKey: Secret = process.env["JWT_ACCESS_TOKEN"]!;
       if (!publicKey) {
