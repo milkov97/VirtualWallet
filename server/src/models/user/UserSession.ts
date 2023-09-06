@@ -1,5 +1,6 @@
+import { ObjectId } from 'mongodb';
 import { UserSessionInterface } from './../../interfaces/user/UserSessionInterface';
 
 export class UserSession implements UserSessionInterface{
-  constructor(public username: string){}
+  constructor(public id: ObjectId, public username: string){}
 }

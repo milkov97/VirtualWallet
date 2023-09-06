@@ -39,8 +39,8 @@ class UserService {
       if (!verifiedPassword) {
         return false;
       }
-
-      const userSession = new UserSession(username);
+      // @ts-ignore
+      const userSession = new UserSession(foundUser._id, foundUser.username);
 
       return userSession;
     } catch (error) {

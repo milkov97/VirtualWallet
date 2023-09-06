@@ -17,6 +17,6 @@ POST http://localhost:3200/login
 Content-Type: application/json
 
 {
-      "username": "testus",
-      "password": "testuse"
+      "username": "testuser",
+      "password": "testuser"
 }
