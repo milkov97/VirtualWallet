@@ -32,12 +32,12 @@ class UserService {
 
       const foundUser = await this.getUser(username);
       if (!foundUser) {
-        throw new Error("User not found");
+        return false;
       }
 
       const verifiedPassword = await comparePasswords(password, foundUser.password);
       if (!verifiedPassword) {
-        throw new Error('Invalid password');
+        return false;
       }
 
       const userSession = new UserSession(username);
