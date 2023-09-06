@@ -11,21 +11,21 @@ class UserController {
         return res.status(401).json("Incorrect username or password");
       }
       // @ts-ignore
-      const payload = { username: user.username };
+      const payload = { id: user._id, username: user.username };
       const accessToken = token.createToken(payload);
       const refreshToken = token.createRefreshToken(payload)
 
-      res.cookie("accessToken", accessToken, {
-        maxAge: 300000,
-        httpOnly: true,
-      });
-
-      return res.json(token.verifyToken(accessToken)?.payload);
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true, 
+        maxAge: 60 * 60 * 1000
+      })
+ 
+      return res.json(accessToken);
     } catch (error) {
       let message = "Unknown Error";
       if (error instanceof Error) message = error.message;
       return res
-        .status(500)
+        .status(501)
         .json({ error: `Internal server error: ${message}` });
     }
   }
