@@ -1,11 +1,11 @@
 import User from "../models/user/User";
-import { UserInterface } from "../models/interfaces/UserInterface";
+import { UserInterface } from "../models/user/interfaces/UserInterface";
 import { connectToDatabase } from "../database/dbConnection";
 import { hashPassword } from "../utils/security/hashPassword";
-import { UserLoginInterface } from "../models/interfaces/UserLoginInterface";
+import { UserLoginInterface } from "../models/user/interfaces/UserLoginInterface";
 import { comparePasswords } from "../utils/security/comparePassword";
 import { UserSession } from "../models/user/UserSession";
-import { UserSessionInterface } from "../models/interfaces/UserSessionInterface";
+import { UserSessionInterface } from "../models/user/interfaces/UserSessionInterface";
 // import { UserLogin } from "../models/user/UserLogin";
 
 class UserService {

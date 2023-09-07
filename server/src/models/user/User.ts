@@ -1,4 +1,4 @@
-import { UserInterface } from "../interfaces/UserInterface";
+import { UserInterface } from "./interfaces/UserInterface";
 
 export default class User implements UserInterface {
   constructor(

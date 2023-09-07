@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { UserInterface } from "./UserInterface";
+import { UserInterface } from "../../user/interfaces/UserInterface";
 
 export interface CardInterface {
   id: ObjectId;
