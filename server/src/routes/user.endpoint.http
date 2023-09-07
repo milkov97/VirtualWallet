@@ -3,14 +3,15 @@ POST http://localhost:3200/signup
 Content-Type: application/json
 
 {
-      "username": "testuser2",
-      "email": "test2@user.com",
+      "username": "testuser8",
+      "email": "test8@user.com",
       "password": "testuser",
       "firstName": "Test",
       "lastName": "User",
       "country": "BG",
       "address": "Sofia",
-      "phoneNumber": "0892719063"
+      "phoneNumber": "0892719063",
+      "isVerified": "true"
 }
 
 POST http://localhost:3200/login

@@ -1,11 +1,11 @@
 import User from "../models/user/User";
-import { UserInterface } from "../interfaces/user/UserInterface";
+import { UserInterface } from "../models/interfaces/UserInterface";
 import { connectToDatabase } from "../database/dbConnection";
 import { hashPassword } from "../utils/security/hashPassword";
-import { UserLoginInterface } from "../interfaces/user/UserLoginInterface";
+import { UserLoginInterface } from "../models/interfaces/UserLoginInterface";
 import { comparePasswords } from "../utils/security/comparePassword";
 import { UserSession } from "../models/user/UserSession";
-import { UserSessionInterface } from "../interfaces/user/UserSessionInterface";
+import { UserSessionInterface } from "../models/interfaces/UserSessionInterface";
 // import { UserLogin } from "../models/user/UserLogin";
 
 class UserService {
@@ -19,7 +19,7 @@ class UserService {
       return user;
     } catch (error) {
       console.log(error);
-      
+
       throw error;
     }
   }
@@ -35,7 +35,10 @@ class UserService {
         return false;
       }
 
-      const verifiedPassword = await comparePasswords(password, foundUser.password);
+      const verifiedPassword = await comparePasswords(
+        password,
+        foundUser.password
+      );
       if (!verifiedPassword) {
         return false;
       }
