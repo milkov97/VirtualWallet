@@ -13,6 +13,7 @@ export const userValidationRules = {
         "address",
         "phoneNumber",
       ],
+
       properties: {
         _id: {
           bsonType: "objectId",
@@ -22,13 +23,13 @@ export const userValidationRules = {
           description: "Must be a string between 4 and 30 characters",
           minLength: 4,
           maxLength: 30,
-          unique: true,
+
         },
         email: {
           bsonType: "string",
           pattern: "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$",
           description: "Must be a valid email address",
-          unique: true,
+
         },
         password: {
           bsonType: "string",
@@ -63,7 +64,7 @@ export const userValidationRules = {
       },
     },
   },
-  validationAction: "error"
+  validationAction: "error",
 };
 
 // password regex-^(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?=.*[a-zA-Z0-9]).{8,}$

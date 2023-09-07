@@ -6,7 +6,7 @@ const app: Express = express();
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-
+app.use("/", userRouter);
 const port = process.env.PORT;
 
 connectToDatabase()
@@ -20,5 +20,4 @@ connectToDatabase()
     console.error("Error connecting to MongoDB:", error);
   });
 
-
-app.use("/", userRouter);
+// app.listen(port)
