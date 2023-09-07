@@ -1,5 +1,5 @@
 import { Db } from "mongodb";
-import { userValidationRules } from "./userValidationFields";
+import { userValidationRules } from "./userValidationRules";
 
 export async function collectionsToCreate(db: Db) {
   const collections = [

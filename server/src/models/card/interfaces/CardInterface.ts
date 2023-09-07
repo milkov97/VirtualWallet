@@ -6,6 +6,6 @@ export interface CardInterface {
   cardNumber: string;
   cardHolderName: UserInterface["firstName"] | UserInterface["lastName"];
   expirationDate: Date;
-  CVV: number;
+  CVV: string;
   userId: ObjectId;
 }
