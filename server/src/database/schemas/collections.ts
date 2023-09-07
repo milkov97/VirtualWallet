@@ -9,8 +9,10 @@ export async function collectionsToCreate(db: Db) {
     },
   ];
   const usersCollection = db.collection("users");
-  await usersCollection.createIndex({ username: 1 }, { unique: true });
-  await usersCollection.createIndex({ email: 1 }, { unique: true });
+  await usersCollection.createIndex(
+    { username: 1, email: 1 },
+    { unique: true }
+  );
 
   for (const collection of collections) {
     const collectionName = collection.name;
