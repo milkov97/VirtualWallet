@@ -1,4 +1,4 @@
-import { UserInterface } from "../../interfaces/user/UserInterface";
+import { UserInterface } from "../interfaces/UserInterface";
 
 export default class User implements UserInterface {
   constructor(
@@ -9,6 +9,9 @@ export default class User implements UserInterface {
     public lastName: string,
     public country: string,
     public address: string,
-    public phoneNumber: string
-  ) {}
+    public phoneNumber: string,
+    public isVerified?: boolean
+  ) {
+    this.isVerified = false;
+  }
 }

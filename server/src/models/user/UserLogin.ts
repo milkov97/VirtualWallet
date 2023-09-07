@@ -1,5 +1,5 @@
-import { UserLoginInterface } from "../../interfaces/user/UserLoginInterface";
+import { UserLoginInterface } from "../interfaces/UserLoginInterface";
 
 export class UserLogin implements UserLoginInterface {
-    constructor(public username: string, public password: string) {}
+  constructor(public username: string, public password: string) {}
 }
