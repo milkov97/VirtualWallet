@@ -1,11 +1,10 @@
 import User from "../models/user/User";
 import { UserInterface } from "../models/user/interfaces/UserInterface";
 import { connectToDatabase } from "../database/dbConnection";
-import { hashPassword } from "../utils/security/hashPassword";
 import { UserLoginInterface } from "../models/user/interfaces/UserLoginInterface";
-import { comparePasswords } from "../utils/security/comparePassword";
 import { UserSession } from "../models/user/UserSession";
 import { UserSessionInterface } from "../models/user/interfaces/UserSessionInterface";
+import { passwordHandler } from "../utils/security/comparePassword";
 // import { UserLogin } from "../models/user/UserLogin";
 
 class UserService {
@@ -35,7 +34,7 @@ class UserService {
         return false;
       }
 
-      const verifiedPassword = await comparePasswords(
+      const verifiedPassword = await passwordHandler.comparePasswords(
         password,
         foundUser.password
       );
@@ -54,7 +53,9 @@ class UserService {
   public async createUser(userData: UserInterface): Promise<UserInterface> {
     try {
       const db = await connectToDatabase();
-      const hashedPassword = await hashPassword(userData.password);
+      const hashedPassword = await passwordHandler.hashPassword(
+        userData.password
+      );
       const newUser = new User(
         userData.username,
         userData.email,
