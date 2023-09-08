@@ -1,10 +1,9 @@
 import { ObjectId } from "mongodb";
-import { UserInterface } from "../../user/interfaces/UserInterface";
 
 export interface CardInterface {
-  id: ObjectId;
+  _id?: ObjectId;
   cardNumber: string;
-  cardHolderName: UserInterface["firstName"] | UserInterface["lastName"];
+  cardHolderName: string;
   expirationDate: Date;
   CVV: string;
   userId: ObjectId;
