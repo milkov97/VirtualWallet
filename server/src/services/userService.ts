@@ -4,7 +4,7 @@ import { connectToDatabase } from "../database/dbConnection";
 import { UserLoginInterface } from "../models/user/interfaces/UserLoginInterface";
 import { UserSession } from "../models/user/UserSession";
 import { UserSessionInterface } from "../models/user/interfaces/UserSessionInterface";
-import { passwordHandler } from "../utils/security/comparePassword";
+import { passwordHandler } from "../utils/security/PasswordHandler";
 // import { UserLogin } from "../models/user/UserLogin";
 
 class UserService {
