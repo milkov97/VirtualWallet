@@ -1,9 +1,11 @@
 import express, { Express } from "express";
 import { connectToDatabase } from "./src/database/dbConnection";
 import userRouter from "./src/routes/userRouter";
+import cors from 'cors'
 
 const app: Express = express();
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use("/", userRouter);
