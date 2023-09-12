@@ -6,6 +6,7 @@ export const userRouter: Router = Router();
 
 userRouter.post("/login",userController.login);
 userRouter.post("/signup", userController.createUser);
-userRouter.get("/me")
+userRouter.get("/me", userController.getUserInfo)
+userRouter.put("/:id", userController.updateUserInfo)
 
 export default userRouter;

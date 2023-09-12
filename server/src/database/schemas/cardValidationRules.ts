@@ -35,4 +35,5 @@ export const cardValidationRules = {
       },
     },
   },
+  validationAction: "error",
 };
