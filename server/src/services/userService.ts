@@ -8,7 +8,7 @@ import { passwordHandler } from "../utils/security/PasswordHandler";
 // import { UserLogin } from "../models/user/UserLogin";
 
 class UserService {
-  public async getUser(username: string): Promise<UserInterface | null> {
+  public async findUser(username: string): Promise<UserInterface | null> {
     try {
       const db = await connectToDatabase();
       const users = db!.collection<User>("users");
@@ -21,13 +21,13 @@ class UserService {
     }
   }
 
-  public async authenticateUser(
+  public async getCurrentUser(
     userData: UserLoginInterface
   ): Promise<UserSessionInterface | boolean> {
     try {
       const { username, password } = userData;
 
-      const foundUser = await this.getUser(username);
+      const foundUser = await this.findUser(username);
       if (!foundUser) {
         return false;
       }

@@ -21,8 +21,8 @@ class Token {
   }
   public createToken(payload: object) {
     try {
-      const privateKey = process.env["JWT_ACCESS_TOKEN"]!;
-      return this.signJWT(payload, privateKey, "5m")
+      const privateKey = process.env["JWT_PRIVATE_KEY"]!;
+      return this.signJWT(payload, privateKey, "5m");
     } catch (error) {
       throw new Error(`Failed to create JWT: ${error}`);
     }
@@ -30,16 +30,36 @@ class Token {
 
   public createRefreshToken(payload: object) {
     try {
-      const privateKey = process.env["JWT_REFRESH_TOKEN"]!;
-      return this.signJWT(payload, privateKey, "1h");
+      const publicKey = process.env["JWT_PUBLIC_KEY"]!;
+      return this.signJWT(payload, publicKey, "1h");
     } catch (error) {
       throw new Error(`Failed to create JWT: ${error}`);
     }
   }
 
-  public verifyJWT(token: string) {
+  public verifyAccessToken(token: string) {
     try {
-      const publicKey: Secret = process.env["JWT_ACCESS_TOKEN"]!;
+      const privateKey: Secret = process.env["JWT_PRIVATE_KEY"]!;
+      if (!privateKey) {
+        throw new Error("JWT configuration missing");
+      }
+      const decoded = jwt.verify(token, privateKey);
+
+      return { payload: decoded, expired: false };
+    } catch (error) {
+      if (error instanceof Error) {
+        return {
+          payload: null,
+          expired: error.message.includes("jwt expired"),
+        };
+      }
+      return null;
+    }
+  }
+
+  public verifyRefreshToken(token: string) {
+    try {
+      const publicKey: Secret = process.env["JWT_PUBLIC_KEY"]!;
       if (!publicKey) {
         throw new Error("JWT configuration missing");
       }
