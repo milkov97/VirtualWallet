@@ -22,12 +22,14 @@ class UserController {
       
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        maxAge: 300000, //5 * 60 * 1000,
+        maxAge: 5 * 60 * 1000,
+        secure: true,
       });
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000,
+        secure: true,
       });
 
       return res.send(user);
@@ -60,10 +62,17 @@ class UserController {
     }
   }
 
-  public async getUserInfo(req: Request, res: Response) {    
+  public async getUserInfo(req: Request, res: Response) {  
+    const { accessToken, refreshToken } = req.cookies;
+    console.log(accessToken, refreshToken);
+    const payload = token.verifyRefreshToken(refreshToken).payload;
+    console.log(payload);
+        
     try {
       // @ts-ignore
-      const user = await userService.getUserSession(req.id);      
+      const user = await userService.getUserSession(payload.id);    
+      console.log(user);
+        
       // @ts-ignore
       return res.send(req.user);
     } catch (error) {

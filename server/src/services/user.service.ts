@@ -55,13 +55,14 @@ class UserService {
   }
 
   public async getUserSession(
-    userId: ObjectId
+    userId: string
   ): Promise<UserSessionInterface | null> {
     try {
+      const id = new ObjectId(userId);
       const db = await connectToDatabase();
       const users = db!.collection<User>("users");
       const user: UserInterface | null = await users.findOne({
-        _id: userId,
+        _id: id,
       });
       if (!user) {
         return null;
@@ -74,11 +75,11 @@ class UserService {
     }
   }
 
-  public async turnDownSession(sessionId: ObjectId) {
-    const session = this.getUserSession(sessionId);
-    // @ts-ignore
-    session.invalidateSession();
-  }
+  // public async turnDownSession(sessionId: ObjectId) {
+  //   const session = this.getUserSession(sessionId);
+  //   // @ts-ignore
+  //   session.invalidateSession();
+  // }
 
   public async createUser(userData: UserInterface): Promise<UserInterface> {
     try {
