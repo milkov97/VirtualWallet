@@ -2,14 +2,14 @@
 import { Request, Response, NextFunction } from "express";
 import { token } from "../utils/jwt/jwtToken";
 import { userService } from "../services/user.service";
-import { ObjectId } from "mongodb";
+// import { ObjectId } from "mongodb";
 
 async function authenticateUser(req: Request, res: Response, next: NextFunction) {
   const { accessToken, refreshToken } = req.cookies;
 
-  if (!accessToken) {
-    return next();
-  }
+  // if (!accessToken) {
+  //   return next();
+  // }
 
   const { payload, expired } = token.verifyAccessToken(accessToken);
 
@@ -28,16 +28,15 @@ async function authenticateUser(req: Request, res: Response, next: NextFunction)
     return next();
   }
 
+  // const userId = new ObjectId();
   // @ts-ignore
-  const userId = new ObjectId(refresh.id);
-  const session = await userService.getUserSession(userId);
-  console.log(session);
+  const session = await userService.getUserSession(refresh.id);
 
   if (!session) {
     return next();
   }
 
-  const newPayload = { id: userId, username: session.username };
+  const newPayload = { id: session.id, username: session.username };
   const newAccessToken = token.createToken(newPayload);
 
   res.cookie("accessToken", newAccessToken, {
@@ -46,8 +45,11 @@ async function authenticateUser(req: Request, res: Response, next: NextFunction)
     secure: true,
   });
 
+  const test = token.verifyAccessToken(newAccessToken);
+  console.log(test);
+
   // @ts-ignore
-  req.user = token.verifyAccessToken(newAccessToken)?.payload;
+  req.user = test.payload;
 
   return next();
 }
