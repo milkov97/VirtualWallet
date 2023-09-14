@@ -3,17 +3,21 @@ import { connectToDatabase } from "./src/database/dbConnection";
 import userRouter from "./src/routes/user.router";
 import cors from 'cors'
 import cookieParser from "cookie-parser"
+import authenticateUser from "./src/middleware/authenticateUser";
 
 const port = process.env.PORT;
 
 const app: Express = express();
 
 app.use(cookieParser())
-app.use(cors({
-  credentials: true
-}))
+app.use(authenticateUser)
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use(
+  cors({
+    credentials: true,
+  })
+);
 app.use("/", userRouter);
 
 

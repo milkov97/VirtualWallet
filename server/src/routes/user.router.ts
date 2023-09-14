@@ -1,14 +1,13 @@
 import { Router } from "express";
 import { userController } from "../controllers/user.controller";
-import authenticateUser from "../middleware/authenticateUser"
-import { requireUser } from "../middleware/requireUser";
+import { requireToken } from "../middleware/requireToken";
 
 export const userRouter: Router = Router();
 
 userRouter.post("/login",userController.login);
 userRouter.post("/signup", userController.createUser);
-userRouter.get("/me", authenticateUser, userController.getUserInfo)
-userRouter.put("/:id", userController.updateUserInfo)
-userRouter.delete("/logout", requireUser, userController.logOut)
+userRouter.get("/me", requireToken, userController.getUserInfo);
+userRouter.put("/:id", requireToken, userController.updateUserInfo)
+userRouter.delete("/logout", requireToken, userController.logOut)
 
 export default userRouter;

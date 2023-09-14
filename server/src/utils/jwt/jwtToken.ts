@@ -22,7 +22,7 @@ class Token {
   public createToken(payload: object) {
     try {
       const privateKey = process.env["JWT_PRIVATE_KEY"]!;
-      return this.signJWT(payload, privateKey, "5m");
+      return this.signJWT(payload, privateKey, "5s");
     } catch (error) {
       throw new Error(`Failed to create JWT: ${error}`);
     }
@@ -44,16 +44,13 @@ class Token {
         throw new Error("JWT configuration missing");
       }
       const decoded = jwt.verify(token, privateKey);
-      
+
       return { payload: decoded, expired: false };
-    } catch (error) {
-      if (error instanceof Error) {
-        return {
-          payload: null,
-          expired: error.message.includes("jwt expired"),
-        };
-      }
-      return null;
+    } catch (error: any) {
+      return {
+        payload: null,
+        expired: error.message.includes("jwt expired"),
+      };
     }
   }
 
@@ -66,14 +63,11 @@ class Token {
       const decoded = jwt.verify(token, publicKey);
 
       return { payload: decoded, expired: false };
-    } catch (error) {
-      if (error instanceof Error) {
-        return {
-          payload: null,
-          expired: error.message.includes("jwt expired"),
-        };
-      }
-      return null;
+    } catch (error: any) {
+      return {
+        payload: null,
+        expired: error.message.includes("jwt expired"),
+      };
     }
   }
 }

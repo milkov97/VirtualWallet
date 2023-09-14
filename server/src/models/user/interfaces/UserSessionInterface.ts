@@ -4,4 +4,5 @@ export interface UserSessionInterface {
   id: ObjectId;
   username: string;
   isValid: boolean;
+  invalidateSession(): void
 }

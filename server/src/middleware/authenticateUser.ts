@@ -1,17 +1,16 @@
+// import { ObjectId } from 'mongodb';
 import { Request, Response, NextFunction } from "express";
 import { token } from "../utils/jwt/jwtToken";
+import { userService } from "../services/user.service";
+import { ObjectId } from "mongodb";
 
-function authenticateUser(req: Request, res: Response, next: NextFunction) {
-  if (!req.cookies) {
-    return res.status(401).json({ error: "Not Authorized" });
-  }
-
+async function authenticateUser(req: Request, res: Response, next: NextFunction) {
   const { accessToken, refreshToken } = req.cookies;
 
   if (!accessToken) {
     return next();
   }
-  // @ts-ignore
+
   const { payload, expired } = token.verifyAccessToken(accessToken);
 
   if (payload) {
@@ -19,13 +18,36 @@ function authenticateUser(req: Request, res: Response, next: NextFunction) {
     req.user = payload;
     return next();
   }
-  // @ts-ignore
+
   const { payload: refresh } =
-    expired && refreshToken ? token.verifyRefreshToken(refreshToken) : { payload: null };
+    expired && refreshToken
+      ? token.verifyRefreshToken(refreshToken)
+      : { payload: null };
 
   if (!refresh) {
     return next();
   }
+
+  // @ts-ignore
+  const userId = new ObjectId(refresh.id);
+  const session = await userService.getUserSession(userId);
+  console.log(session);
+
+  if (!session) {
+    return next();
+  }
+
+  const newPayload = { id: userId, username: session.username };
+  const newAccessToken = token.createToken(newPayload);
+
+  res.cookie("accessToken", newAccessToken, {
+    httpOnly: true,
+    maxAge: 5 * 60 * 1000,
+    secure: true,
+  });
+
+  // @ts-ignore
+  req.user = token.verifyAccessToken(newAccessToken)?.payload;
 
   return next();
 }

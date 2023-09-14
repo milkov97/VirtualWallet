@@ -5,10 +5,11 @@ import { UserLoginInterface } from "../models/user/interfaces/UserLoginInterface
 import { UserSession } from "../models/user/UserSession";
 import { UserSessionInterface } from "../models/user/interfaces/UserSessionInterface";
 import { passwordHandler } from "../utils/security/PasswordHandler";
+import { ObjectId } from "mongodb";
 // import { UserLogin } from "../models/user/UserLogin";
 
 class UserService {
-  public async findUser(username: string): Promise<UserInterface | null> {
+  public async findUserInfo(username: string): Promise<UserInterface | null> {
     try {
       const db = await connectToDatabase();
       const users = db!.collection<User>("users");
@@ -27,7 +28,7 @@ class UserService {
     try {
       const { username, password } = userData;
 
-      const foundUser = await this.findUser(username);
+      const foundUser = await this.findUserInfo(username);
       if (!foundUser) {
         return false;
       }
@@ -39,13 +40,44 @@ class UserService {
       if (!verifiedPassword) {
         return false;
       }
-      // @ts-ignore
-      const userSession = new UserSession(foundUser._id, foundUser.username, true);
+      
+      const userSession = new UserSession(
+        // @ts-ignore
+        foundUser._id,
+        foundUser.username,
+        true
+      );
 
       return userSession;
     } catch (error) {
       throw error;
     }
+  }
+
+  public async getUserSession(
+    userId: ObjectId
+  ): Promise<UserSessionInterface | null> {
+    try {
+      const db = await connectToDatabase();
+      const users = db!.collection<User>("users");
+      const user: UserInterface | null = await users.findOne({
+        _id: userId,
+      });
+      if (!user) {
+        return null;
+      }
+      // @ts-ignore
+      const userSession = new UserSession(user._id, user?.username, true);
+      return userSession;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async turnDownSession(sessionId: ObjectId) {
+    const session = this.getUserSession(sessionId);
+    // @ts-ignore
+    session.invalidateSession();
   }
 
   public async createUser(userData: UserInterface): Promise<UserInterface> {
