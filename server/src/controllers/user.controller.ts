@@ -5,6 +5,10 @@ import { token } from "../utils/jwt/jwtToken";
 class UserController {
   public async login(req: Request, res: Response): Promise<Response> {
     try {
+      // res.cookie("refreshToken", refreshToken, {
+      //   httpOnly: true,
+      //   maxAge: 60 * 60 * 1000,
+      // });
       const userData = req.body;
       const user = await userService.getCurrentUser(userData);
 
@@ -15,20 +19,16 @@ class UserController {
       // @ts-ignore
       const payload = { id: user._id, username: user.username };
       const accessToken = token.createToken(payload);
-      const refreshToken = token.createRefreshToken(payload);
+      // @ts-ignore
+      const refreshToken = token.createRefreshToken({sessionId: user._id});
 
-      res.cookie("refreshToken", refreshToken, {
+      res.cookie("accessToken", accessToken, {
         httpOnly: true,
-        maxAge: 60 * 60 * 1000,
-        sameSite: true,
-        secure: true
+        maxAge: 5 * 60 * 1000,
+        secure: true,
       });
 
-      return res.json({
-        accessToken,
-        refreshToken,
-        message: "Logged in sucessfully",
-      });
+      return res.json(token.verifyAccessToken(accessToken)?.payload);
     } catch (error) {
       let message = "Unknown Error";
 
@@ -59,27 +59,31 @@ class UserController {
   }
 
   public async getUserInfo(req: Request, res: Response) {
-    if (!req.headers.cookie) {
-      return res.status(401).json({ error: "Not Authorized" });
-    }
+    
     try {
-      const refreshToken = req.headers.cookie;
-      const userToken = token.verifyRefreshToken(refreshToken.split("=")[1]);
-
-
-      return res.status(201).json(userToken);
+      // @ts-ignore
+      const user = await userService.findUser(req.username)
+      return res.send(user)
     } catch (error) {
       let message = "Unknown Error";
 
       if (error instanceof Error) message = error.message;
 
-      return res
-        .status(401)
-        .json({ error: `Unauthorized: ${message}` });
+      return res.status(401).json({ error: `Unauthorized: ${message}` });
     }
   }
 
   public async updateUserInfo(req: Request, res: Response) {}
+
+  public async logOut(req: Request, res: Response) {
+    res.cookie("accessToken", "", {
+      httpOnly: true,
+      maxAge: 5 * 60 * 1000,
+      secure: true,
+    });
+
+    return res.send({success: true})
+  }
 }
 
 export const userController = new UserController();

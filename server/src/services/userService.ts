@@ -40,7 +40,7 @@ class UserService {
         return false;
       }
       // @ts-ignore
-      const userSession = new UserSession(foundUser._id, foundUser.username);
+      const userSession = new UserSession(foundUser._id, foundUser.username, true);
 
       return userSession;
     } catch (error) {

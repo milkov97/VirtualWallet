@@ -12,7 +12,7 @@ class Token {
 
       const token = jwt.sign(payload, privateKey, {
         algorithm: hashAlgorithm,
-        expiresIn: expiresIn,
+        expiresIn,
       });
       return token;
     } catch (error) {
@@ -44,7 +44,7 @@ class Token {
         throw new Error("JWT configuration missing");
       }
       const decoded = jwt.verify(token, privateKey);
-
+      
       return { payload: decoded, expired: false };
     } catch (error) {
       if (error instanceof Error) {
