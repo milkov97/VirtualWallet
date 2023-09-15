@@ -1,15 +1,17 @@
-// import { ObjectId } from 'mongodb';
 import { Request, Response, NextFunction } from "express";
 import { token } from "../utils/jwt/jwtToken";
 import { userService } from "../services/user.service";
-// import { ObjectId } from "mongodb";
+
 
 async function authenticateUser(req: Request, res: Response, next: NextFunction) {
-  const { accessToken, refreshToken } = req.cookies;
 
-  // if (!accessToken) {
-  //   return next();
-  // }
+  const accessToken = req.headers.authorization;
+  const refreshToken = req.cookies;
+
+
+  if (!accessToken) {
+    return next();
+  }
 
   const { payload, expired } = token.verifyAccessToken(accessToken);
 
@@ -46,7 +48,6 @@ async function authenticateUser(req: Request, res: Response, next: NextFunction)
   });
 
   const test = token.verifyAccessToken(newAccessToken);
-  console.log(test);
 
   // @ts-ignore
   req.user = test.payload;

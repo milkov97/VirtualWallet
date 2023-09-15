@@ -9,7 +9,11 @@ class UserController {
       const user = await userService.getCurrentUser(userData);
 
       if (!user) {
-        return res.status(401).json("Incorrect username or password");
+        return res
+          .status(401)
+          .header({ "WWW-Authenticate": "Bearer" })
+          .json("Invalid username or password")
+          
       }
       
       // @ts-ignore
@@ -20,11 +24,7 @@ class UserController {
       const refreshToken = token.createRefreshToken({ id: user.id });
 
       
-      res.cookie("accessToken", accessToken, {
-        httpOnly: true,
-        maxAge: 5 * 60 * 1000,
-        secure: true,
-      });
+      res.setHeader('Authorization', `Bearer ${accessToken}`)
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
@@ -63,15 +63,19 @@ class UserController {
   }
 
   public async getUserInfo(req: Request, res: Response) {  
-    const { accessToken, refreshToken } = req.cookies;
-    console.log(accessToken, refreshToken);
+    const authorizationHeader = req.headers.authorization;
+    const accessToken = authorizationHeader
+      ? authorizationHeader.split(" ")[1]
+      : null;
+    console.log(accessToken);
+    
+    const refreshToken = req.cookies ? req.cookies.refreshToken : null;
+    console.log(refreshToken);
+    
     const payload = token.verifyRefreshToken(refreshToken).payload;
-    console.log(payload);
-        
     try {
       // @ts-ignore
       const user = await userService.getUserSession(payload.id);    
-      console.log(user);
         
       // @ts-ignore
       return res.send(req.user);

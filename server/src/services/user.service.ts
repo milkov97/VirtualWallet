@@ -57,6 +57,8 @@ class UserService {
   public async getUserSession(
     userId: string
   ): Promise<UserSessionInterface | null> {
+    console.log(userId);
+    
     try {
       const id = new ObjectId(userId);
       const db = await connectToDatabase();
