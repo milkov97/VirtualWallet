@@ -5,8 +5,7 @@ import { userService } from "../services/user.service";
 
 async function authenticateUser(req: Request, res: Response, next: NextFunction) {
 
-  const accessToken = req.headers.authorization;
-  const refreshToken = req.cookies;
+  const { accessToken, refreshToken } = req.cookies
 
 
   if (!accessToken) {
@@ -42,9 +41,9 @@ async function authenticateUser(req: Request, res: Response, next: NextFunction)
   const newAccessToken = token.createToken(newPayload);
 
   res.cookie("accessToken", newAccessToken, {
-    httpOnly: true,
+
     maxAge: 5 * 60 * 1000,
-    secure: true,
+
   });
 
   const test = token.verifyAccessToken(newAccessToken);

@@ -24,12 +24,17 @@ class UserController {
       const refreshToken = token.createRefreshToken({ id: user.id });
 
       
-      res.setHeader('Authorization', `Bearer ${accessToken}`)
+      res.cookie("accessToken", accessToken, {
+
+        maxAge: 5 * 60 * 1000,
+
+      });
+      
 
       res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
+
         maxAge: 60 * 60 * 1000,
-        secure: true,
+
       });
 
       return res.send(user);
@@ -63,22 +68,23 @@ class UserController {
   }
 
   public async getUserInfo(req: Request, res: Response) {  
-    const authorizationHeader = req.headers.authorization;
-    const accessToken = authorizationHeader
-      ? authorizationHeader.split(" ")[1]
-      : null;
-    console.log(accessToken);
+
+    // const accessToken = authorizationHeader
+    //   ? authorizationHeader.split(" ")[1]
+    //   : null;
+
     
-    const refreshToken = req.cookies ? req.cookies.refreshToken : null;
-    console.log(refreshToken);
+    const { accessToken, refreshToken } = req.cookies;
+    console.log("accessToken", accessToken, "refreshToken", refreshToken);
     
     const payload = token.verifyRefreshToken(refreshToken).payload;
     try {
       // @ts-ignore
       const user = await userService.getUserSession(payload.id);    
-        
+      console.log(user);
+      
       // @ts-ignore
-      return res.send(req.user);
+      return res.send(user);
     } catch (error) {
       let message = "Unknown Error";
 
