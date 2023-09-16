@@ -1,3 +1,4 @@
+import { Currency } from "../../models/wallet/enums/Currency";
 export const walletValidationRules = {
   validator: {
     $jsonSchema: {
@@ -11,7 +12,7 @@ export const walletValidationRules = {
           bsonType: "number",
         },
         currency: {
-          bsonType: "string",
+          bsonType: [Currency.BGN, Currency.EUR, Currency.USD],
         },
       },
     },

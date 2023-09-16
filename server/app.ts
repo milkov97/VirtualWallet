@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import { connectToDatabase } from "./src/database/dbConnection";
 import userRouter from "./src/routes/user.router";
+import walletRouter from "./src/routes/wallet.router";
 import cors from 'cors'
 import cookieParser from "cookie-parser"
 // import authenticateUser from "./src/middleware/authenticateUser";
@@ -20,6 +21,7 @@ app.use(
   })
 );
 app.use("/", userRouter);
+app.use("/", walletRouter)
 
 
 connectToDatabase()
