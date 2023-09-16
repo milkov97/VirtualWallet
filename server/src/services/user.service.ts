@@ -1,3 +1,4 @@
+import { Currency } from './../models/wallet/enums/Currency';
 import User from "../models/user/User";
 import { UserInterface } from "../models/user/interfaces/UserInterface";
 import { connectToDatabase } from "../database/dbConnection";
@@ -6,6 +7,7 @@ import { UserSession } from "../models/user/UserSession";
 import { UserSessionInterface } from "../models/user/interfaces/UserSessionInterface";
 import { passwordHandler } from "../utils/security/PasswordHandler";
 import { ObjectId } from "mongodb";
+import { Wallet } from "../models/wallet/Wallet";
 // import { UserLogin } from "../models/user/UserLogin";
 
 class UserService {
@@ -99,8 +101,11 @@ class UserService {
         userData.address,
         userData.phoneNumber
       );
+      
       // @ts-ignore
       const result = await db.collection("users").insertOne(newUser);
+      const newWallet = new Wallet(result.insertedId, 0, Currency.EUR);
+      await db?.collection("wallets").insertOne(newWallet)
       return { ...newUser, _id: result.insertedId };
     } catch (error) {
       throw error;

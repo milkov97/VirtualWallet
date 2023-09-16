@@ -23,20 +23,22 @@ export async function collectionsToCreate(db: Db) {
     { username: 1, email: 1 },
     { unique: true }
   );
-  const cardCollection = db.collection("cards");
-  await cardCollection.createIndex({ cardNumber: 1234567542157453 }, { unique: true });
+  const cardsCollection = db.collection("cards");
+  await cardsCollection.createIndex({ cardNumber: 1234567542157453 }, { unique: true });
+
+  const walletsCollection = db.collection("wallets");
+  await walletsCollection.createIndex( {ownerId: 1}, {unique : true})
 
 
   for (const collection of collections) {
-    const collectionName = collection.name;
     const collectionsDB = await db
-      .listCollections({ name: collectionName })
+      .listCollections({ name: collection.name })
       .toArray();
     if (collectionsDB.length === 0) {
-      await db.createCollection(collectionName, {
+      await db.createCollection(collection.name, {
         validator: collection.validator,
       });
-      console.log(`Collection '${collectionName}' created`);
+      console.log(`Collection '${collection.name}' created`);
     }
   }
 }

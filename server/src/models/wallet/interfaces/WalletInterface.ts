@@ -7,5 +7,5 @@ export interface WalletInterface {
     ownerId: ObjectId;
     balance: number;
     currency: Currency.BGN | Currency.EUR | Currency.USD;
-    cards: CardInterface[];
+    cards?: CardInterface[];
 }
