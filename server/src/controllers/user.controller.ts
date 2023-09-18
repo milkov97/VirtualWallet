@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { userService } from "../services/user.service";
+import { userService } from "../services/user.services";
 import { token } from "../utils/jwt/jwtToken";
 
 class UserController {
@@ -12,10 +12,9 @@ class UserController {
         return res
           .status(401)
           .header({ "WWW-Authenticate": "Bearer" })
-          .json("Invalid username or password")
-          
+          .json("Invalid username or password");
       }
-      
+
       // @ts-ignore
       const payload = { id: user.id, username: user.username };
 
@@ -23,18 +22,12 @@ class UserController {
       // @ts-ignore
       const refreshToken = token.createRefreshToken({ id: user.id });
 
-      
       res.cookie("accessToken", accessToken, {
-
         maxAge: 5 * 60 * 1000,
-
       });
-      
 
       res.cookie("refreshToken", refreshToken, {
-
         maxAge: 60 * 60 * 1000,
-
       });
 
       return res.send(user);
@@ -67,22 +60,20 @@ class UserController {
     }
   }
 
-  public async getUserInfo(req: Request, res: Response) {  
-
+  public async getUserInfo(req: Request, res: Response) {
     // const accessToken = authorizationHeader
     //   ? authorizationHeader.split(" ")[1]
     //   : null;
 
-    
     const { accessToken, refreshToken } = req.cookies;
     console.log("accessToken", accessToken, "refreshToken", refreshToken);
-    
+
     const payload = token.verifyRefreshToken(refreshToken).payload;
     try {
       // @ts-ignore
-      const user = await userService.getUserSession(payload.id);    
+      const user = await userService.getUserSession(payload.id);
       console.log(user);
-      
+
       // @ts-ignore
       return res.send(user);
     } catch (error) {

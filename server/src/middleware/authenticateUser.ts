@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { token } from "../utils/jwt/jwtToken";
-import { userService } from "../services/user.service";
+import { userService } from "../services/user.services";
 
-
-async function authenticateUser(req: Request, res: Response, next: NextFunction) {
-
-  const { accessToken, refreshToken } = req.cookies
-
+async function authenticateUser(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const { accessToken, refreshToken } = req.cookies;
 
   if (!accessToken) {
     return next();
@@ -41,9 +42,7 @@ async function authenticateUser(req: Request, res: Response, next: NextFunction)
   const newAccessToken = token.createToken(newPayload);
 
   res.cookie("accessToken", newAccessToken, {
-
     maxAge: 5 * 60 * 1000,
-
   });
 
   const test = token.verifyAccessToken(newAccessToken);
