@@ -1,7 +1,7 @@
 import { Db } from "mongodb";
 import { userValidationRules } from "./userValidationRules";
 import { walletValidationRules } from "./walletValidationRules";
-import { cardValidationRules } from "./cardValidationRules";
+
 
 export async function collectionsToCreate(db: Db) {
   const collections = [
@@ -13,21 +13,20 @@ export async function collectionsToCreate(db: Db) {
       name: "wallets",
       validator: walletValidationRules,
     },
-    {
-      name: "cards",
-      validator: cardValidationRules,
-    },
+
   ];
   const usersCollection = db.collection("users");
   await usersCollection.createIndex(
     { username: 1, email: 1 },
     { unique: true }
   );
-  const cardsCollection = db.collection("cards");
-  await cardsCollection.createIndex({ cardNumber: 1234567542157453 }, { unique: true });
-
   const walletsCollection = db.collection("wallets");
   await walletsCollection.createIndex( {ownerId: 1}, {unique : true})
+  await walletsCollection.createIndex(
+    { "cards.cardNumber": 1234567542157453 },
+    { unique: true }
+  );
+
 
 
   for (const collection of collections) {

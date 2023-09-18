@@ -1,4 +1,5 @@
 import { Currency } from "../../models/wallet/enums/Currency";
+import { cardValidationRules } from "./cardValidationRules";
 export const walletValidationRules = {
   validator: {
     $jsonSchema: {
@@ -14,6 +15,10 @@ export const walletValidationRules = {
         currency: {
           bsonType: [Currency.BGN, Currency.EUR, Currency.USD],
         },
+        cards: {
+          bsonType: "array",
+          items: cardValidationRules.validator.$jsonSchema
+        }
       },
     },
   },
