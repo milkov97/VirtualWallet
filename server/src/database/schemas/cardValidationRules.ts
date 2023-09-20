@@ -23,7 +23,7 @@ export const cardValidationRules = {
           description: "Include first and last name of the card owner",
         },
         expirationDate: {
-          bsonType: "String",
+          bsonType: "date",
           pattern: "^(0[1-9]|1[0-2])/[0-9]{2}$",
           description: "Must be in the format 'NN/NN' (e.g., '03/24')",
         },

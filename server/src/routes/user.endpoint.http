@@ -3,7 +3,7 @@ POST http://localhost:3200/signup
 Content-Type: application/json
 
 {
-      "username": "testuser1",
+      "username": "testuser",
       "email": "test1@user.com",
       "password": "testuser",
       "firstName": "Test",
@@ -17,7 +17,7 @@ POST http://localhost:3200/login
 Content-Type: application/json
 
 {
-      "username": "testuser1",
+      "username": "testuser",
       "password": "testuser"
 }
 
@@ -32,8 +32,8 @@ POST http://localhost:3200/wallet/card
 Content-Type: application/json
 
 {
-      "cardNumber": "1111222233334445",
+      "cardNumber": "1111222233334447",
       "cardHolderName": "Test User",
-      "expirationDate": "08/24",
+      "expirationDate": "08/29",
       "CVV": "123"
 }

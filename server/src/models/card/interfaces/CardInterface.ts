@@ -3,6 +3,6 @@
 export interface CardInterface {
   cardNumber: string;
   cardHolderName: string;
-  expirationDate: string;
+  expirationDate: Date;
   CVV: string;
 }
