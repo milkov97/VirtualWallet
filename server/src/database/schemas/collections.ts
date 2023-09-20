@@ -23,8 +23,8 @@ export async function collectionsToCreate(db: Db) {
   const walletsCollection = db.collection("wallets");
   await walletsCollection.createIndex( {ownerId: 1}, {unique : true})
   await walletsCollection.createIndex(
-    { "cards.cardNumber": 1234567542157453 },
-    { unique: true }
+    { "cards.cardNumber": 1 },
+    { unique: true, partialFilterExpression: { "cards.cardNumber": { $exists: true } } }
   );
 
 

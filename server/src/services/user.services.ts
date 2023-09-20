@@ -102,10 +102,14 @@ class UserService {
         userData.phoneNumber
       );
 
-      // @ts-ignore
-      const result = await db.collection("users").insertOne(newUser);
-      const newWallet = new Wallet(result.insertedId, 0, Currency.EUR);
-      await db?.collection("wallets").insertOne(newWallet);
+
+      const result = await db!.collection("users").insertOne(newUser);
+      const newWallet = new Wallet(result.insertedId, 0, Currency.EUR, []);
+      console.log(newUser, result, newWallet);
+      
+      const walletResult = await db?.collection("wallets").insertOne(newWallet);
+      console.log(walletResult);
+      
       return { ...newUser, _id: result.insertedId };
     } catch (error) {
       throw error;

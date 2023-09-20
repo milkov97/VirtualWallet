@@ -27,9 +27,18 @@ class WalletController {
       const payload = token.verifyRefreshToken(
         req.cookies.refreshToken
       ).payload;
+
+      const cardData = req.body;
+      
       // @ts-ignore
-      const card = await cardService.addCard(payload.id)
-      return res.status(204).send({card})
+      const card = cardService.createCard(cardData);
+      
+      // @ts-ignore
+      const cardInserted = await walletService.addCardToWallet(payload.id, card);
+      if(cardInserted){
+        return res.status(204).send({ card });
+      }
+      return res.status(404)
     } catch(error){
       let message = "Unknown Error";
       if (error instanceof Error) message = error.message;

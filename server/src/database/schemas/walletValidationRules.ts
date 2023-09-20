@@ -16,7 +16,7 @@ export const walletValidationRules = {
           bsonType: [Currency.BGN, Currency.EUR, Currency.USD],
         },
         cards: {
-          bsonType: "array",
+          bsonType:"array",
           items: cardValidationRules.validator.$jsonSchema
         }
       },

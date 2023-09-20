@@ -6,7 +6,6 @@ import { CardInterface } from "../models/card/interfaces/CardInterface";
 
 class WalletService {
   public async getWalletInfo(ownerId: string): Promise<WalletInterface | null> {
-    
     try {
       const id = new ObjectId(ownerId);
       const db = await connectToDatabase();
@@ -20,22 +19,28 @@ class WalletService {
     }
   }
 
-  public async createCard(ownerId: string, card: {}): Promise<CardInterface | boolean> {
-    try{
-      const id = new ObjectId(ownerId);
-      const db = await connectToDatabase();
-      const walletCollection = db!.collection<Wallet>("wallets");
-      const wallet: WalletInterface | null = await walletCollection.findOne({
-        ownerId: id,
-      });
-      
-      if(!wallet) return false
-      
-      wallet.cards?.push()
+  public async addCardToWallet(ownerId: string, card: CardInterface) {
+    const id = new ObjectId(ownerId);
+    const db = await connectToDatabase();
+    const walletCollection = db!.collection<Wallet>("wallets");
+    const wallet: WalletInterface | null = await walletCollection.findOne({
+      ownerId: id,
+    });
+    
+    if (!wallet) {
+      return null;
+    }    
 
-    } catch(error: any) {
-      throw new Error(error)
+    const result = await walletCollection.updateOne(
+      { _id: wallet._id },
+      { $push: { cards: card } }
+    );
+
+    if (result.modifiedCount === 1) {
+      return true;
     }
+
+    return false;
   }
 }
 

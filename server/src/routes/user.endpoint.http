@@ -5,7 +5,7 @@ Content-Type: application/json
 {
       "username": "testuser1",
       "email": "test1@user.com",
-      "password": "testuser1",
+      "password": "testuser",
       "firstName": "Test",
       "lastName": "User",
       "country": "BG",
@@ -18,7 +18,7 @@ Content-Type: application/json
 
 {
       "username": "testuser1",
-      "password": "testuser1"
+      "password": "testuser"
 }
 
 GET http://localhost:3200/me
@@ -27,3 +27,13 @@ GET http://localhost:3200/wallet
 
 
 DELETE http://localhost:3200/logout
+
+POST http://localhost:3200/wallet/card
+Content-Type: application/json
+
+{
+      "cardNumber": "1111222233334445",
+      "cardHolderName": "Test User",
+      "expirationDate": "08/24",
+      "CVV": "123"
+}
