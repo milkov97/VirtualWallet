@@ -115,6 +115,8 @@ class UserService {
       throw error;
     }
   }
+
+  public async updateUser() {}
 }
 
 export const userService = new UserService();

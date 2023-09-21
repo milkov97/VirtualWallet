@@ -4,7 +4,6 @@ import userRouter from "./src/routes/user.router";
 import walletRouter from "./src/routes/wallet.router";
 import cors from 'cors'
 import cookieParser from "cookie-parser"
-import cardRouter from "./src/routes/card.router";
 // import authenticateUser from "./src/middleware/authenticateUser";
 
 const port = process.env.PORT;
@@ -23,7 +22,7 @@ app.use(
 );
 app.use("/", userRouter);
 app.use("/", walletRouter)
-app.use("/", cardRouter)
+
 
 
 connectToDatabase()

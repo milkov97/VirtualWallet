@@ -3,6 +3,7 @@ import { WalletInterface } from "../models/wallet/interfaces/WalletInterface";
 import { connectToDatabase } from "../database/dbConnection";
 import { Wallet } from "../models/wallet/Wallet";
 import { CardInterface } from "../models/card/interfaces/CardInterface";
+import { Card } from "../models/card/Card";
 
 class WalletService {
   public async getWalletInfo(ownerId: string): Promise<WalletInterface | null> {
@@ -19,7 +20,7 @@ class WalletService {
     }
   }
 
-  public async addCardToWallet(ownerId: string, card: CardInterface) {
+  public async addCardToWallet(ownerId: string, cardData: CardInterface) {
     const id = new ObjectId(ownerId);
     const db = await connectToDatabase();
     const walletCollection = db!.collection<Wallet>("wallets");
@@ -31,7 +32,14 @@ class WalletService {
       return null;
     }    
 
-    const foundCard = wallet.cards?.find((existingCard) => existingCard.cardNumber === card.cardNumber)
+    const newCard = new Card(
+      cardData.cardNumber,
+      cardData.cardHolderName,
+      cardData.expirationDate,
+      cardData.CVV
+    );
+
+    const foundCard = wallet.cards?.find((existingCard) => existingCard.cardNumber === newCard.cardNumber)
 
     
     if(foundCard) {
@@ -40,7 +48,7 @@ class WalletService {
 
     const result = await walletCollection.updateOne(
       { _id: wallet._id },
-      { $push: { cards: card } }
+      { $push: { cards: newCard } }
     );
 
     if (result.modifiedCount === 1) {
@@ -49,6 +57,10 @@ class WalletService {
 
     return false;
   }
+
+  public async updateCard() {}
+
+  public async removeCard() {}
 }
 
 export const walletService = new WalletService();

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { walletService } from "../services/wallet.services";
 import { token } from "../utils/jwt/jwtToken";
-import { cardService } from "../services/card.services";
+// import { cardService } from "../services/card.services";
 
 
 class WalletController {
@@ -30,21 +30,26 @@ class WalletController {
 
       const cardData = req.body;
       
-      // @ts-ignore
-      const card = cardService.createCard(cardData);
+      // const card = cardService.createCard(cardData);
       
       // @ts-ignore
-      const cardInserted = await walletService.addCardToWallet(payload.id, card);
+      const cardInserted = await walletService.addCardToWallet(payload.id, cardData);
       if(cardInserted){
-        return res.status(204).send({ card });
+        return res.status(204).send({ message: "Card added" });
       }
       return res.status(404)
     } catch(error){
       let message = "Unknown Error";
+
       if (error instanceof Error) message = error.message;
+      
       return res.status(401).json({ error: `Unauthorized: ${message}` });
     }
   }
+
+  public async updateCardInfo(req: Request, res: Response) {}
+
+  public async removeCardFromWallet(req: Request, res: Response) {}
 }
 
 export const walletController = new WalletController()
