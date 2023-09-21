@@ -6,7 +6,7 @@ import { CardInterface } from "../models/card/interfaces/CardInterface";
 
 class WalletService {
   public async getWalletInfo(ownerId: string): Promise<WalletInterface | null> {
-    try {
+    try { 
       const id = new ObjectId(ownerId);
       const db = await connectToDatabase();
       const walletCollection = db!.collection<Wallet>("wallets");
@@ -30,6 +30,13 @@ class WalletService {
     if (!wallet) {
       return null;
     }    
+
+    const foundCard = wallet.cards?.find((existingCard) => existingCard.cardNumber === card.cardNumber)
+
+    
+    if(foundCard) {
+      throw new Error("Card number already exists")
+    }
 
     const result = await walletCollection.updateOne(
       { _id: wallet._id },

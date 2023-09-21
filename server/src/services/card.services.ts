@@ -19,6 +19,10 @@ class CardService {
       throw new Error(error);
     }
   }
+
+  public async updateCard() {}
+
+  public async deleteCard() {}
 }
 
 export const cardService = new CardService()

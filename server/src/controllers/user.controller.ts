@@ -61,18 +61,11 @@ class UserController {
   }
 
   public async getUserInfo(req: Request, res: Response) {
-    // const accessToken = authorizationHeader
-    //   ? authorizationHeader.split(" ")[1]
-    //   : null;
 
-    const { accessToken, refreshToken } = req.cookies;
-    console.log("accessToken", accessToken, "refreshToken", refreshToken);
-
-    const payload = token.verifyRefreshToken(refreshToken).payload;
+    const payload = token.verifyRefreshToken(req.cookies.refreshToken).payload;
     try {
       // @ts-ignore
       const user = await userService.getUserSession(payload.id);
-      console.log(user);
 
       // @ts-ignore
       return res.send(user);
@@ -89,13 +82,10 @@ class UserController {
 
   public async logOut(req: Request, res: Response) {
     res.cookie("accessToken", "", {
-      httpOnly: true,
       maxAge: 0,
-      secure: true,
     });
 
     res.cookie("refreshToken", "", {
-      httpOnly: true,
       maxAge: 0,
     });
     // @ts-ignore
