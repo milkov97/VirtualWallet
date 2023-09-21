@@ -28,12 +28,14 @@ GET http://localhost:3200/wallet
 
 DELETE http://localhost:3200/logout
 
-POST http://localhost:3200/wallet/card
+POST http://localhost:3200/wallet/cards
 Content-Type: application/json
 
 {
-      "cardNumber": "1111222233334447",
+      "cardNumber": "1111222233334452",
       "cardHolderName": "Test User",
       "expirationDate": "10/23",
       "CVV": "123"
 }
+
+DELETE http://localhost:3200/wallet/cards/11

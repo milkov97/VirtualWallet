@@ -7,7 +7,7 @@ import { Card } from "../models/card/Card";
 
 class WalletService {
   public async getWalletInfo(ownerId: string): Promise<WalletInterface | null> {
-    try { 
+    try {
       const id = new ObjectId(ownerId);
       const db = await connectToDatabase();
       const walletCollection = db!.collection<Wallet>("wallets");
@@ -27,10 +27,10 @@ class WalletService {
     const wallet: WalletInterface | null = await walletCollection.findOne({
       ownerId: id,
     });
-    
+
     if (!wallet) {
       return null;
-    }    
+    }
 
     const newCard = new Card(
       cardData.cardNumber,
@@ -39,11 +39,12 @@ class WalletService {
       cardData.CVV
     );
 
-    const foundCard = wallet.cards?.find((existingCard) => existingCard.cardNumber === newCard.cardNumber)
+    const foundCard = wallet.cards?.find(
+      (existingCard) => existingCard.cardNumber === newCard.cardNumber
+    );
 
-    
-    if(foundCard) {
-      throw new Error("Card number already exists")
+    if (foundCard) {
+      throw new Error("Card number already exists");
     }
 
     const result = await walletCollection.updateOne(
@@ -58,9 +59,42 @@ class WalletService {
     return false;
   }
 
-  public async updateCard() {}
+  public async removeCard(ownerId: string, cardIndex: number) {
+    const id = new ObjectId(ownerId);
+    const db = await connectToDatabase();
+    const walletCollection = db!.collection<Wallet>("wallets");
+    const wallet: WalletInterface | null = await walletCollection.findOne({
+      ownerId: id,
+    });
 
-  public async removeCard() {}
+    if (!wallet) {
+      return null;
+    }
+    // console.log(wallet.cards);
+    // console.log(cardIndex < 0);
+    // console.log(cardIndex >= wallet.cards!.length);
+
+    if (cardIndex < 0 || cardIndex >= wallet.cards!.length) {
+      throw new Error("Invalid card index");;
+    }
+
+    
+
+    wallet.cards?.splice(cardIndex, 1);
+
+    const result = await walletCollection.updateOne(
+      { _id: wallet._id },
+      { $set: { cards: wallet.cards } }
+    );
+    console.log(result);
+
+    if (result.modifiedCount === 1) {
+      console.log("Card removed successfully");
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export const walletService = new WalletService();

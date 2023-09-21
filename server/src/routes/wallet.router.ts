@@ -8,6 +8,7 @@ export const walletRouter: Router = Router()
 
 walletRouter.use(authenticateUser)
 walletRouter.get("/wallet", requireToken, walletController.getWallet)
-walletRouter.post("/wallet/card", requireToken, walletController.addCard);
+walletRouter.post("/wallet/cards", requireToken, walletController.addCard);
+walletRouter.delete("/wallet/cards/:index", requireToken, walletController.removeCardFromWallet)
 
 export default walletRouter

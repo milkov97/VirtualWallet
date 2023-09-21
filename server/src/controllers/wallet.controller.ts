@@ -47,9 +47,26 @@ class WalletController {
     }
   }
 
-  public async updateCardInfo(req: Request, res: Response) {}
+  public async removeCardFromWallet(req: Request, res: Response) {
+    try {
+      const payload = token.verifyRefreshToken(
+        req.cookies.refreshToken
+      ).payload;
 
-  public async removeCardFromWallet(req: Request, res: Response) {}
+      const cardIndex = parseInt(req.params.index)
+
+      // @ts-ignore
+      const cardRemoved = await walletService.removeCard(payload.id, cardIndex)
+
+      if (cardRemoved) {
+        return res.status(204).send({ message: "Card removed" });
+      }
+      return res.status(404);
+
+    } catch(error: Error | any) {
+      return res.status(400).json({message: error.message})
+    }
+  }
 }
 
 export const walletController = new WalletController()
