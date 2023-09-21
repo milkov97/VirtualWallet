@@ -70,15 +70,10 @@ class WalletService {
     if (!wallet) {
       return null;
     }
-    // console.log(wallet.cards);
-    // console.log(cardIndex < 0);
-    // console.log(cardIndex >= wallet.cards!.length);
 
     if (cardIndex < 0 || cardIndex >= wallet.cards!.length) {
       throw new Error("Invalid card index");;
     }
-
-    
 
     wallet.cards?.splice(cardIndex, 1);
 
@@ -86,10 +81,8 @@ class WalletService {
       { _id: wallet._id },
       { $set: { cards: wallet.cards } }
     );
-    console.log(result);
 
     if (result.modifiedCount === 1) {
-      console.log("Card removed successfully");
       return true;
     }
 

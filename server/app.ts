@@ -4,6 +4,7 @@ import userRouter from "./src/routes/user.router";
 import walletRouter from "./src/routes/wallet.router";
 import cors from 'cors'
 import cookieParser from "cookie-parser"
+import { transactionRouter } from "./src/routes/transaction.router";
 // import authenticateUser from "./src/middleware/authenticateUser";
 
 const port = process.env.PORT;
@@ -20,8 +21,9 @@ app.use(
     origin: "http://localhost:3200",
   })
 );
-app.use("/", userRouter);
-app.use("/", walletRouter)
+app.use("/api/user", userRouter);
+app.use("/api/wallet", walletRouter)
+app.use("/transactions", transactionRouter)
 
 
 
