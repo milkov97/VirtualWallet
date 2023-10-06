@@ -1,6 +1,7 @@
 import { Db } from "mongodb";
 import { userValidationRules } from "./userValidationRules";
 import { walletValidationRules } from "./walletValidationRules";
+import { transactionValidationRules } from "./transacrionValidationRules";
 
 
 export async function collectionsToCreate(db: Db) {
@@ -13,6 +14,10 @@ export async function collectionsToCreate(db: Db) {
       name: "wallets",
       validator: walletValidationRules,
     },
+    {
+      name: "transactions",
+      validator: transactionValidationRules,
+    }
 
   ];
   const usersCollection = db.collection("users");
